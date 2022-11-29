@@ -64,15 +64,31 @@ runs:
         aws-region: ${{ inputs.aws-region }}
         audience: ${{ inputs.aws-audience }}
 
+
+   - name: Obtain GitHub App Installation Access Token
+     id: githubAppAuth
+     run: |
+       TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.GH_APP_CREDENTIALS_TOKEN }})"
+       echo "::add-mask::$TOKEN"
+       echo "::set-output name=token::$TOKEN"
+   - name: Use the obtained token
+     run: |
+       curl -X POST -H 'Content-Type: application/json' \
+         -d '{"context":"test","state":"success"}' \
+         "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA?access_token=$GITHUB_TOKEN"
+     env:
+       GITHUB_TOKEN: ${{ steps.githubAppAuth.outputs.token }}
+
+
     - name: terragrunt validate
       shell: bash
-      run: |
-        git config --local --remove-section http."https://github.com/" 
-        # http."https://github.com/"
-        # git config --global url."git@github.com:Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "git@github.com:infracloudio/"
-        git config --global url."https://Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "https://github.com/infracloudio"
-        cd account/${{ inputs.env-dir }}/${{ inputs.aws-region }} && terragrunt run-all validate --terragrunt-non-interactive
-    # need to access the private repo 
+    #   run: |
+    #     git config --local --remove-section http."https://github.com/" 
+    #     # http."https://github.com/"
+    #     # git config --global url."git@github.com:Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "git@github.com:infracloudio/"
+    #     git config --global url."https://Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "https://github.com/infracloudio"
+    #     cd account/${{ inputs.env-dir }}/${{ inputs.aws-region }} && terragrunt run-all validate --terragrunt-non-interactive
+    # # need to access the private repo 
 
 
 
