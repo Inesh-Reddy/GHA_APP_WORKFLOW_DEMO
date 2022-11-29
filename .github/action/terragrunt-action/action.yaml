@@ -83,10 +83,10 @@ runs:
     - name: terragrunt validate
       shell: bash
       run: |
-        git config --local --remove-section http."https://github.com/" 
+        # git config --local --remove-section http."https://github.com/" 
         # http."https://github.com/"
         # git config --global url."git@github.com:Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "git@github.com:infracloudio/"
-        git config --global url."https://Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "https://github.com/infracloudio"
+        # git config --global url."https://Inesh-Reddy:${{ inputs.TOKEN }}@github.com/infracloudio".insteadOf "https://github.com/infracloudio"
         cd account/${{ inputs.env-dir }}/${{ inputs.aws-region }} && terragrunt run-all validate --terragrunt-non-interactive
     # # need to access the private repo 
 
