@@ -1,0 +1,1 @@
+checkov -d . --quiet --skip-path "/*/examples/*" --framework terraform --skip-check "CKV_AWS_23,CKV_AWS_108,CKV_AWS_109,CKV_AWS_49,CKV_AWS_21,CKV_AWS_19,CKV_AWS_145,CKV2_AWS_6,CKV_AWS_144,CKV_AWS_18,CKV2_AWS_5,CKV_AWS_111,CKV_AWS_107,CKV_AWS_110,CKV_AWS_1"
